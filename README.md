@@ -23,8 +23,9 @@ Execute the C Program for the desired output.
 ## Write a C program that implements a producer-consumer system with two processes using Semaphores.
 ```
 /*
- * sem.c  - demonstrates a basic producer-consumer
- *                            implementation.              */
+ * sem-producer-consumer.c  - demonstrates a basic producer-consumer
+ *                            implementation.
+ */
 #include <stdio.h>	 /* standard I/O routines.              */
 #include <stdlib.h>      /* rand() and srand() functions        */
 #include <unistd.h>	 /* fork(), etc.                        */
@@ -37,7 +38,6 @@ Execute the C Program for the desired output.
 /* union semun is defined by including <sys/sem.h> */
 #else
 /* according to X/OPEN we have to define it ourselves */
-
 union semun {
         int val;                    /* value for SETVAL */
         struct semid_ds *buf;       /* buffer for IPC_STAT, IPC_SET */
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 	case -1:	/* fork() failed */
 	    perror("fork");
 	    exit(1);
-case 0:		/* child process here */
+	case 0:		/* child process here */
 	    for (i=0; i<NUM_LOOPS; i++) {
 		/* block on the semaphore, unless it's value is non-negative. */
 		sem_op.sem_num = 0;
@@ -88,7 +88,7 @@ case 0:		/* child process here */
 		fflush(stdout);
 		/* increase the value of the semaphore by 1. */
 		sem_op.sem_num = 0;
-sem_op.sem_op = 1;
+					sem_op.sem_op = 1;
 		sem_op.sem_flg = 0;
 		semop(sem_set_id, &sem_op, 1);
 		/* pause execution for a little bit, to allow the */
@@ -101,23 +101,16 @@ sem_op.sem_op = 1;
 		                      sleep(10); }
 if(NUM_LOOPS>=10)    {
 	    semctl(sem_set_id, 0, IPC_RMID, sem_val) ;} // Remove the sem_set_id
-	    }}
-	    break;
-    }
-    return 0;
-}
-```
-
+	    }
+    
+    return 0;}
+`````
 
 
 ## OUTPUT
-$ ./sem.o 
+![Screenshot 2024-04-04 110844](https://github.com/23013743/Linux-IPC-Semaphores/assets/161271714/1e1fc168-b1f3-461b-92e7-794d0b5481ab)
+![Screenshot 2024-04-04 110908](https://github.com/23013743/Linux-IPC-Semaphores/assets/161271714/c1760782-7703-4c77-be8a-cfdf94b86c61)
 
-![image](https://github.com/23013753/Linux-IPC-Semaphores/assets/145634121/bf873295-5f83-46e2-8687-b222a7584fde)
-
-$ ipcs
-
-![image](https://github.com/23013753/Linux-IPC-Semaphores/assets/145634121/bfb78e2c-a2f5-478d-8cab-252391a0a315)
 
 
 
